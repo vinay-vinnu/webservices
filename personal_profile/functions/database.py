@@ -38,6 +38,50 @@ def getPersonalProfileQuestionsDB():
         logging.error("Error in retrieving Personal Profile questions "+str(e))
         raise
 
+def getProfileData():
+    try:
+        cnx = connectToDatabase()
+        mycursor = cnx.cursor()
+
+        mycursor.execute("SELECT * FROM personal_profile;")
+
+        allprofiles = mycursor.fetchall()
+
+        return allprofiles
+    except Exception:
+        raise
+        
+def getProfileDataFromDbById(from_dbid):
+    try:
+
+        cnx = connectToDatabase()
+        mycursor = cnx.cursor()
+        sql = ("SELECT * FROM personal_profile WHERE ID = {};".format(from_dbid))
+
+
+        mycursor.execute(sql)
+
+        profilebyid = mycursor.fetchall()
+
+        return profilebyid
+    except Exception:
+        raise
+        
+def updateProfileDataFromDbById(id,data):
+    try:
+
+        cnx = connectToDatabase()
+        mycursor = cnx.cursor()
+
+        sql = ("UPDATE personal_profile SET registeredmobile = '"+data['registeredMobile']+"',firstname = '"+data['firstName']+"',lastname = '"+data['lastName']+"',email = '"+data['email']+"',marriedstatus = '"+data['marriedStatus']+"',age = '"+data['age']+"',addr1 = '"+data['addrLine1']+"',addr2 = '"+data['addrLine2']+"',addr3 = '"+data['addrLine3']+"',addr4 = '"+data['addrLine4']+"',occupation = '"+data['occupation']+"' WHERE id = {};".format(id))
+
+
+
+        mycursor.execute(sql)
+        cnx.commit()
+    except Exception:
+        raise
+        
 def getLookUpID(lookupname):
     try:
         cnx = connectToDatabase()
